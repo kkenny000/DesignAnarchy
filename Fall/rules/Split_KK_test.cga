@@ -1,0 +1,36 @@
+/**
+ * File:    Split.cga
+ * Created: 1 Nov 2021 20:44:13 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+#import meterConverter: "meterToFeet.cga"
+#@StartRule 
+#Lot --> 
+	#extrude(meterCoverter.meterTofeet(100))
+	
+	
+@StartRule 
+Lot --> 
+	extrude(30)
+	#split this, on the y axis (by what dimensions: what do I do next? Go to floors). *Asterisk means, do this until you can't find more geometry
+	split(y){6: storeFront | ~1: split(y){3: Floors}*}
+	#split(x){5: Floors}*
+
+attr storeFront = [3,5]
+
+StoreFront -->
+	split(x){rand(3): floorColor set(seedian. rand(100))}*
+	
+	
+
+
+Floors -->
+	#select the face or side of the floor: extrude and then change the color
+	comp(f){object.side: extrude(rand(2,10))floorColor | all: originalFloor}
+	
+floorColor --> color(rand(1), rand(1), rand(1))
+	
+	
